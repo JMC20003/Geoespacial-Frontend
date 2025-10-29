@@ -1,0 +1,26 @@
+import { http } from '@/shared/services/api';
+
+export const getFeatures = async () => {
+    const response = await http.get('/features');
+    return response.data;
+};
+
+export const createFeatureCollection = async (featureCollection) => {
+   const response = await http.post('/feature/collection', featureCollection);
+   return response.data;
+};
+
+export const getFeatureById = async(id) => {
+  const response = await http.get(`/feature/${id}`);
+  return response.data;
+};
+
+export const updateFeature = async(id, feature) => {
+  const response = await http.put(`/feature/${id}`, feature);
+  return response.data;
+};
+
+export const deleteFeature = async(id) => {
+  const response = await http.delete(`/feature/${id}`);
+  return response.data;
+};
