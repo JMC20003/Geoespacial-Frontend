@@ -4,12 +4,15 @@ import { ChevronRightIcon, Cross1Icon } from "@radix-ui/react-icons"
 import { usePanelTabs } from "../hook/usePanelTabs"
 import { TabsBar } from "../components/TabsBar"
 import { PanelFooterButtons } from "../components/PanelFooterButtons"
+import { Sidepanels } from "../../../features/content-side-panels/Sidepanels"
 
-export const RightPanel = ({ title = "Panel", tabs = [], footerButtons = [] }) => {
+export const RightPanel = ({ title = "Panel", tabs = [], footerButtons = [], handleSaveStyle, handleCancelStyle }) => {
   const { openPanel, setOpenPanel } = useGlobalState()
   const { activeTab, setActiveTab, currentTab } = usePanelTabs(tabs)
   const [width, setWidth] = useState(350)
   const [isDragging, setIsDragging] = useState(false)
+
+  console.log('RightPanel: footerButtons received:', footerButtons);
 
   const handleClose = () => {
     setOpenPanel(prev => ({ ...prev, right: false }))
@@ -37,35 +40,36 @@ export const RightPanel = ({ title = "Panel", tabs = [], footerButtons = [] }) =
       return () => {
         document.removeEventListener("mousemove", handleMouseMove)
         document.removeEventListener("mouseup", handleMouseUp)
+
       }
     }
   }, [isDragging])
 
   return (
     <>
-      <div style={{ width }} className={`${!openPanel.right && 'hidden'} absolute top-[96px] h-[100dvh] bottom-0 right-0 z-[800]`}>
+      <div style={{ width }} className={`${!openPanel.right && 'hidden'} absolute top-[96px] h-[calc(100dvh-96px)] right-0 z-[800]`}>
         <div className="relative py-2 bg-white h-full border-t-4 border-gray-400/70 flex flex-col">
           {/* Header */}
-            <div className="mt-12 flex justify-between pr-2 items-center border-b border-gray-300">
-                <h1 className="text-lg">{title}</h1>
-                <span
-                onClick={handleClose}
-                className="text-gray-400 cursor-pointer p-1 rounded hover:bg-red-300 hover:text-black"
-                >
-                <Cross1Icon />
-                </span>
-            </div>
+          <div className="mt-12 flex justify-between pr-2 items-center border-b border-gray-300">
+            <h1 className="text-lg">{title}</h1>
+            <span
+              onClick={handleClose}
+              className="text-gray-400 cursor-pointer p-1 rounded hover:bg-red-300 hover:text-black"
+            >
+              <Cross1Icon />
+            </span>
+          </div>
 
-            {/* Tabs */}
-            <TabsBar tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
+          {/* Tabs */}
+          <TabsBar tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
 
-            {/* Scrollable Content */}
-            <div className="w-full overflow-auto flex-grow">
-              {currentTab?.content}
-            </div>
+          {/* Scrollable Content */}
+          <div className="w-full overflow-auto flex-grow">
+            {currentTab?.content}
+          </div>
 
             {/* Reusable Footer */}
-            <PanelFooterButtons buttons={footerButtons} />
+            {footerButtons.length > 0 && <PanelFooterButtons buttons={footerButtons} />}
         </div>
       </div>
 

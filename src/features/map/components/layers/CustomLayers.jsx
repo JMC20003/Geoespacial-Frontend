@@ -1,9 +1,10 @@
-import { useSelector } from 'react-redux';
-import { Source, Layer } from 'react-map-gl';
+import { useSelector } from "react-redux";
+import { Source, Layer } from "react-map-gl";
+import { FeatureLayer } from "./FeatureLayer";
 
 export const CustomLayers = () => {
-  const layerData = useSelector(state => state.mapReducer.layerData);
-
+  const layerData = useSelector((state) => state.mapReducer.layerData);
+  // Si no hay datos de capas base, no renderizamos las capas del geoserver
   if (!layerData?.length) return null;
 
   return (
@@ -13,10 +14,14 @@ export const CustomLayers = () => {
           key={layer.table}
           id={layer.table}
           type="vector"
-          tiles={[`${import.meta.env.VITE_URL_GEOSERVER}/gwc/service/tms/1.0.0/${import.meta.env.VITE_GEOSERVER_WORKSPACE}:${layer.table}@EPSG%3A900913@pbf/{z}/{x}/{y}.pbf`]}
+          tiles={[
+            `${import.meta.env.VITE_URL_GEOSERVER}/gwc/service/tms/1.0.0/${
+              import.meta.env.VITE_GEOSERVER_WORKSPACE
+            }:${layer.table}@EPSG%3A900913@pbf/{z}/{x}/{y}.pbf`,
+          ]}
           scheme="tms"
         >
-          {layer.styles.map((style) => (
+          {layer.styles?.map((style) => (
             <Layer
               key={style.id}
               id={style.id}

@@ -1,6 +1,8 @@
-import { useState, useRef, useEffect } from 'react'
-import { ButtonTool } from '@/shared/components/ButtonTool'
-import { iconsSelect } from './icons/IconsSelect'
+import { ButtonTool } from '@/shared/components/ButtonTool';
+import { iconsSelect } from './icons/IconsSelect';
+import { Pencil1Icon, TrashIcon } from '@radix-ui/react-icons';
+import { useState, useRef, useEffect } from 'react';
+
 
 const SelectDropdown = ({ onSelectTool }) => {
 	const [showDropdown, setShowDropdown] = useState(false)
@@ -61,49 +63,62 @@ const SelectDropdown = ({ onSelectTool }) => {
 	)
 }
 
-const SelectToolbar = () => {
-	const handleToolSelection = (toolKey) => {
-		console.log('Herramienta seleccionada:', toolKey)
-	}
+const SelectToolbar = ({ handleDelete, handleEdit, handleSave, handleToolSelection, selectedFeature }) => {
 
-	return (
-		<div className="flex items-center bg-white shadow-sm w-auto overflow-hidden text-[10px] gap-1 h-full">
-			{/* Selección */}
-			<div className="border-r border-gray-300 flex flex-col grow justify-between">
-				<div className="flex items-center relative">
-					<SelectDropdown onSelectTool={handleToolSelection} />
+  return (
+    <div className="flex items-center bg-white shadow-sm w-auto overflow-hidden text-[10px] gap-1 h-full">
+      {/* Selección */}
+      <div className="border-r border-gray-300 flex flex-col grow justify-between">
+        <div className="flex items-center relative">
+          <SelectDropdown onSelectTool={handleToolSelection} />
+          <ButtonTool
+            className='w-[70px] hover:bg-sky-200 h-full'
+            icon={iconsSelect.seleccion.porAtributo}
+            label={iconsSelect.seleccion.porAtributo.alt}
+          />
+          <ButtonTool
+            className='w-[70px] hover:bg-sky-200 h-full'
+            icon={iconsSelect.seleccion.porUbicacion}
+            label={iconsSelect.seleccion.porUbicacion.alt}
+          />
+        </div>
+        <span className="text-[12px] text-center text-gray-900">
+          {iconsSelect.seleccion.section}
+        </span>
+      </div>
 
-					<ButtonTool
-						className='w-[70px] hover:bg-sky-200 h-full'
-						icon={iconsSelect.seleccion.porAtributo}
-						label={iconsSelect.seleccion.porAtributo.alt}
-					/>
-					<ButtonTool
-						className='w-[70px] hover:bg-sky-200 h-full'
-						icon={iconsSelect.seleccion.porUbicacion}
-						label={iconsSelect.seleccion.porUbicacion.alt}
-					/>
-				</div>
-				<span className="text-[12px] text-center text-gray-900">
-					{iconsSelect.seleccion.section}
-				</span>
-			</div>
+      {/* Opciones */}
+      <div className="border-r border-gray-300 flex flex-col justify-between h-full">
+        <div className="flex items-center h-full">
+          <ButtonTool
+            className='w-[70px] hover:bg-sky-200 h-full'
+            icon={iconsSelect.opciones.exportar} // Re-using export icon for save
+            label="Guardar"
+            onClick={handleSave}
+          />          
+          {selectedFeature  && (
+            <>
+              <ButtonTool
+                icon={<Pencil1Icon />}
+                label="Editar"
+                onClick={handleEdit}
+                className='w-[70px] hover:bg-sky-200 h-full'
+              />
+              <ButtonTool
+                icon={<TrashIcon />}
+                label="Eliminar"
+                onClick={handleDelete}
+                className='w-[70px] hover:bg-sky-200 h-full'
+              />
+            </>
+          )}
+        </div>
+        <span className="text-[12px] text-center text-gray-900">
+          {iconsSelect.opciones.section}
+        </span>
+      </div>
+    </div>
+  );
+};
 
-			{/* Opciones */}
-			<div className="border-r border-gray-300 flex flex-col justify-between h-full">
-				<div className="flex items-center h-full">
-					<ButtonTool
-						className='w-[70px] hover:bg-sky-200 h-full'
-						icon={iconsSelect.opciones.exportar}
-						label={iconsSelect.opciones.exportar.alt}
-					/>
-				</div>
-				<span className="text-[12px] text-center text-gray-900">
-					{iconsSelect.opciones.section}
-				</span>
-			</div>
-		</div>
-	)
-}
-
-export default SelectToolbar
+export default SelectToolbar;

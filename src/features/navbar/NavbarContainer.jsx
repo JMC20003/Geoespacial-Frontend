@@ -10,7 +10,7 @@ import EditToolbar from './tools/edit/EditToolbar';
 import SelectToolbar from './tools/select/SelectToolBar';
 
 
-export default function NavbarContainer() {
+export default function NavbarContainer({ handleDelete, handleEdit, handleSave, handleToolSelection, isEditing, selectedFeature }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [navItems, setNavItems] = useState(NAV_ITEMS);
 
@@ -85,7 +85,14 @@ export default function NavbarContainer() {
 
         {navItems[1].active && (
           <div className="flex justify-start relative h-full">
-            <SelectToolbar />
+            <SelectToolbar
+              handleDelete={handleDelete}
+              handleEdit={handleEdit}
+              handleSave={handleSave}
+              handleToolSelection={handleToolSelection}
+              isEditing={isEditing}
+              selectedFeature={selectedFeature}
+            />
           </div>
         )}
 

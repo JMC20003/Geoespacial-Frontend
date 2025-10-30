@@ -1,7 +1,7 @@
 import { forwardRef, useEffect, useImperativeHandle } from 'react';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import { useControl } from 'react-map-gl';
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 import { SRMode, SRStyle } from './MapboxScaleRotateMode';
 import DragCircleCustomMode from "./drawCircle/drawCircle"
 import { setMapboxDrawRef } from '@/shared/redux/features/mapSlice';
@@ -10,6 +10,8 @@ import FreehandMode from './freehandMode/FreehandMode'
 
 const DrawControl = forwardRef((props, ref) => {
   const dispatch = useDispatch()
+
+  const { activeDrawMode } = useSelector((state) => state.mapReducer);
   const modes = MapboxDraw.modes;
   modes.draw_rectangle = DrawRectangle;
   modes.draw_circle = DragCircleCustomMode;
@@ -58,10 +60,19 @@ const DrawControl = forwardRef((props, ref) => {
     }
   }, [draw,dispatch]);
 
+  useEffect(() => {
+      if (activeDrawMode && draw) {
+        draw.changeMode(activeDrawMode);
+        console.log('Cambiando modo de dibujo →', activeDrawMode);
+      }
+  }, [activeDrawMode, draw]);
+
   useImperativeHandle(ref, () => ({
     add: draw.add.bind(draw),
     delete: draw.delete.bind(draw),
+    deleteAll: draw.deleteAll.bind(draw),
     getAll: draw.getAll.bind(draw),
+    changeMode: draw.changeMode.bind(draw),
   }));
 
   return null;

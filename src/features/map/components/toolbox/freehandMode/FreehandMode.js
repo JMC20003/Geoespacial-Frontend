@@ -65,7 +65,7 @@ FreehandMode.fireUpdate = function(state) {
 };
 
 FreehandMode.simplify = function(polygon) {
-  const tolerance = 1 / Math.pow(1.05, 10 * this.map.getZoom());
+  const tolerance = 0.00000001 / Math.pow(1.05, 10 * this.map.getZoom());
   turf.simplify(polygon, {
       mutate: true,
       tolerance: tolerance,

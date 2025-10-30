@@ -1,5 +1,6 @@
 import { http } from '@/shared/services/api';
 
+//aqui se puede agregar funcionalidad para manejo de errores , try cathch, etc
 export const getFeatures = async () => {
     const response = await http.get('/features');
     return response.data;
@@ -12,6 +13,8 @@ export const createFeatureCollection = async (featureCollection) => {
 
 export const getFeatureById = async(id) => {
   const response = await http.get(`/feature/${id}`);
+  console.log(`API: getFeatureById(${id}) response:`, response);
+  console.log(`API: getFeatureById(${id}) response.data:`, response.data);
   return response.data;
 };
 

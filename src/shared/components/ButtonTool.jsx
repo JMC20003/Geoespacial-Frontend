@@ -1,10 +1,10 @@
-import {ReactNode, cloneElement} from 'react';
+import {ReactNode, cloneElement, isValidElement} from 'react';
 
 /**
  * Reusable button with optional icon and label
  * 
  * @param {{
- *   icon?: { src: string | ReactNode, alt?: string, width?: number, height?: number },
+ *   icon?: { src: string | ReactNode, alt?: string, width?: number, height?: number } | React.ReactElement,
  *   label?: string,
  *   isActive?: boolean,
  *   disabled?: boolean,
@@ -25,26 +25,34 @@ export const ButtonTool = ({
   const flexLayout = layout === 'row' ? 'flex-row gap-1' : 'flex-col';
 
   const iconElement = icon ? (
-    typeof icon.src === 'string' ? (
-      <img
-        src={icon.src}
-        alt={icon.alt || 'icon'}
-        style={{
-          width: icon.width || 24,
-          height: icon.height || 24,
-        }}
-        className={`object-contain transition-all ${
-          disabled ? 'grayscale opacity-50' : ''
-        }`}
-      />
-    ) : (
-      cloneElement(icon.src, {
-        width: icon.width || 24,
-        height: icon.height || 24,
+    isValidElement(icon) ? ( // Case 1: icon is a React element directly (e.g., <Pencil1Icon />)
+      cloneElement(icon, {
         className: `object-contain transition-all ${
           disabled ? 'grayscale opacity-50' : ''
-        } ${icon.src.props.className || ''}`.trim(),
+        } ${icon.props.className || ''}`.trim(),
       })
+    ) : ( // Case 2: icon is an object { src: string | ReactNode, ... }
+      typeof icon.src === 'string' ? (
+        <img
+          src={icon.src}
+          alt={icon.alt || 'icon'}
+          style={{
+            width: icon.width || 24,
+            height: icon.height || 24,
+          }}
+          className={`object-contain transition-all ${
+            disabled ? 'grayscale opacity-50' : ''
+          }`}
+        />
+      ) : ( // Case 3: icon.src is a React element (e.g., { src: <SomeIcon />, ... })
+        cloneElement(icon.src, {
+          width: icon.width || 24,
+          height: icon.height || 24,
+          className: `object-contain transition-all ${
+            disabled ? 'grayscale opacity-50' : ''
+          } ${icon.src.props.className || ''}`.trim(),
+        })
+      )
     )
   ) : null;
 

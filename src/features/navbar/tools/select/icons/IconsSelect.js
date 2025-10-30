@@ -7,6 +7,7 @@ import circuloIcon from "@/shared/assets/svg/tab_seleccion/circulo.svg";
 import lazoIcon from "@/shared/assets/svg/tab_seleccion/lazo.svg";
 import lineaIcon from "@/shared/assets/svg/tab_seleccion/linea.svg";
 import poligonoIcon from "@/shared/assets/svg/tab_seleccion/poligono.svg";
+import puntoIcon from "@/shared/assets/svg/tab_edit/punto_acceso.svg";
 
 export const iconsSelect = {
 	seleccion: {
@@ -70,5 +71,12 @@ export const iconsSelect = {
 			width: 32,
 			height: 32,
 		},
+		punto: {
+			src: puntoIcon,
+			alt: "Punto",
+			width: 32,
+			height: 32,
+		}
+
 	},
 };
